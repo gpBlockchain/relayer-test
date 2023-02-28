@@ -4,4 +4,6 @@ services:
     image: synapseweb3/relayer
     build: relayer
     volumes:
-      - ./data:/home
+      - ./data/ckb_mmr_storage:/home/ckb_mmr_storage
+#      - ./data:/home
+#      - hermes:/root/.hermes
