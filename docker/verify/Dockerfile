@@ -5,7 +5,7 @@ WORKDIR /
 RUN git clone https://github.com/synapseweb3/forcerelay-verifier
 
 RUN cd forcerelay-verifier \
-    && git checkout main \
+    && git checkout master \
     && cargo build -p cli
 
 RUN set -eux; \

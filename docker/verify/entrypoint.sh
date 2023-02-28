@@ -1,5 +1,5 @@
 #!/bin/sh
 set -x
 mkdir ~/.helios/
-cp config.toml ~/.helios/
+cp helios.toml ~/.helios/
 exec helios

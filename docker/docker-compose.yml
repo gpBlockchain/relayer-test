@@ -8,8 +8,16 @@ services:
 
   verify-client:
     image: synapseweb3/verify
-    build: relayer
+    build: verify
+    ports:
+      - '8545:8545'
     volumes:
       - ./data/verify/ckb_mmr_storage:/home/ckb_mmr_storage
+#    healthcheck:
+#      test: [ "CMD-SHELL", "curl --fail http://localhost:80/health || exit 1" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+
 #      - ./data:/home
 #      - hermes:/root/.hermes
