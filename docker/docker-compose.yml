@@ -1,11 +1,10 @@
 version: '3.3'
 services:
-    relayer-client:
-      image: synapseweb3/relayer
-      build: relayer
-      volumes:
-        - ./data/relayer/ckb_mmr_storage:/home/ckb_mmr_storage
-
+  relayer-client:
+    image: synapseweb3/relayer
+    build: relayer
+    volumes:
+      - ./data/relayer/ckb_mmr_storage:/home/ckb_mmr_storage
   verify-client:
     image: synapseweb3/verify
     build: verify
