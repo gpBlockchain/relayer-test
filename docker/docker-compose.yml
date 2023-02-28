@@ -3,3 +3,5 @@ services:
   light-client1:
     image: synapseweb3/relayer
     build: relayer
+    volumes:
+      - ./data:/home

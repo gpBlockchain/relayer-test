@@ -11,7 +11,8 @@ RUN cd relayer \
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-    curl
+    curl \
+    ca-certificates
 
 FROM ubuntu:bionic
 
@@ -23,7 +24,8 @@ COPY --from=synapseweb3-relayer-docker-builder \
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-    curl
+    curl \
+    ca-certificates
 
 COPY --from=synapseweb3-relayer-docker-builder \
      /relayer/target/release/hermes \
@@ -31,6 +33,6 @@ COPY --from=synapseweb3-relayer-docker-builder \
 
 WORKDIR /home
 
-COPY ./config.toml ./entrypoint.sh /home/
+COPY ./config.toml ./relayer-seed.json ./entrypoint.sh /home/
 
 ENTRYPOINT ["/home/entrypoint.sh"]
