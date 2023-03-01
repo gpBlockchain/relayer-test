@@ -31,12 +31,20 @@ services:
     image: 3156004029/relayer:main
     volumes:
       - ./data/relayer:/home
+    depends_on:
+      - proxy-light-consensus-client
+      - proxy-light-exec-client
+      - proxy-ckb-client
   verify-client:
     image: 3156004029/verify:main
     ports:
       - '8545:8545'
     volumes:
       - ./data/verify:/home
+    depends_on:
+      - proxy-light-consensus-client
+      - proxy-light-exec-client
+      - proxy-ckb-client
 networks:
   nn:
     driver: bridge
