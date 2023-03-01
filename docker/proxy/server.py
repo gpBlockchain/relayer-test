@@ -27,8 +27,9 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
         # 构造目标URL
         target_url = os.environ.get("MOCK_URL") + request_path
         # 发送请求到目标网站
-        response = requests.post(target_url, data=request_data, headers=self.headers)
+        response = requests.post(target_url, data=request_data)
         # 将响应返回给客户端
+        print("target_url:{target_url},data:{data}".format(target_url=target_url,data=request_data))
         self.send_response(response.status_code)
         self.send_header("Content-type", response.headers["Content-type"])
         self.end_headers()
