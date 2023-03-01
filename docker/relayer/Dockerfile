@@ -6,7 +6,7 @@ RUN git clone https://github.com/synapseweb3/relayer.git
 
 RUN cd relayer \
     && git checkout main \
-    && cargo build --release
+    && cargo build
 
 RUN set -eux; \
     apt-get update; \
@@ -28,7 +28,7 @@ RUN set -eux; \
     ca-certificates
 
 COPY --from=synapseweb3-relayer-docker-builder \
-     /relayer/target/release/hermes \
+     /relayer/target/debug/hermes \
      /usr/local/bin/
 
 WORKDIR /home
