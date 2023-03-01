@@ -23,13 +23,15 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
         # 获取请求数据的长度
         content_length = int(self.headers["Content-Length"])
         # 读取请求数据
+        headers = {}
+        headers["Content-Type"] = self.headers["Content-Type"]
         request_data = self.rfile.read(content_length)
         # 构造目标URL
         target_url = os.environ.get("MOCK_URL") + request_path
         # 发送请求到目标网站
-        response = requests.post(target_url, data=request_data)
-        # 将响应返回给客户端
         print("target_url:{target_url},data:{data}".format(target_url=target_url,data=request_data))
+        response = requests.post(target_url, data=request_data,headers = headers)
+        # 将响应返回给客户端
         self.send_response(response.status_code)
         self.send_header("Content-type", response.headers["Content-type"])
         self.end_headers()
