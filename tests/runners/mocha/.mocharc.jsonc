@@ -3,6 +3,6 @@
         "tests/runners/mocha/init.js"
     ],
     "spec": [
-        "tests/demo.test.ts"
+        "tests/*.test.ts"
     ]
 }
