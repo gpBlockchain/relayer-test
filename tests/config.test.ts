@@ -12,7 +12,6 @@ describe('config chainid is error', function () {
     const configVerifierContent = fs.readFileSync(configVerifier, "utf-8");
     it("id is not exist on chain", async () => {
         await step("1.modify config", async () => {
-            console.log("modify config");
             const ModifyConfigVerifier = child_process.execSync(`echo "${configVerifierContent}" | sed 's/ckb_ibc_client_id = "ibc-ckb-0"/ckb_ibc_client_id = "ibc-ckb-error"/'`);
             const tempModifyConfigVerifier = 'temp.toml';
             fs.writeFileSync(tempModifyConfigVerifier, ModifyConfigVerifier, 'utf-8');
