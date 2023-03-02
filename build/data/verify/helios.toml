@@ -1,9 +1,9 @@
 [mainnet]
-consensus_rpc = "http://localhost:8080"
-execution_rpc = "http://localhost:8083"
+consensus_rpc = "http://192.168.4.101:8080"
+execution_rpc = "http://192.168.5.101:8080"
 rpc_port = 8545
 checkpoint = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef"
-ckb_rpc = "http://localhost:8081"
+ckb_rpc = "http://192.168.3.101:8080"
 lightclient_contract_typeargs = "0xb7fcfa4ad253ddd60481bdd35331a634ff985fdb3b3fab4e1066cf97faf40315"
 lightclient_binary_typeargs = "0xeb871adf5fc97fde4b56ee8b545581147dbb8eb6fdce4fd3d51e8c3618505699"
 storage_path = "./ckb_mmr_storage"
