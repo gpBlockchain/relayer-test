@@ -32,7 +32,6 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
         print("target_url:{target_url},data:{data}".format(target_url=target_url,data=request_data))
         response = requests.post(target_url, data=request_data,headers = headers)
         # 将响应返回给客户端
-        print("response:",response)
         self.send_response(response.status_code)
         self.send_header("Content-type", response.headers["Content-type"])
         self.end_headers()
