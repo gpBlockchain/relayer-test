@@ -1,4 +1,5 @@
 import {exec} from "child_process";
+import * as child_process from 'child_process';
 
 
 export async function shWithTimeout(cmd: string, timeout: number) {
@@ -21,6 +22,10 @@ export async function sh(cmd: string) {
 
 }
 
+export function shSync(cmd: string) {
+    console.log(cmd);
+    return child_process.execSync(cmd);
+}
 
 export async function sleep(timeOut: number) {
     await new Promise(r => setTimeout(r, timeOut));
