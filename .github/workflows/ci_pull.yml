@@ -29,6 +29,7 @@ jobs:
         id: test
         run: |
           npm i
+          cd build/ && sh prepare.sh && cd ../
           npm run test
       - name: package report
         id: package
