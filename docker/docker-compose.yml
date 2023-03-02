@@ -1,12 +1,5 @@
 version: '3.3'
 services:
-  proxy-client:
-    image: lgp/proxy
-    build: proxy
-    ports:
-      - "8080:8080"
-    environment:
-      - MOCK_URL=https://www.lightclientdata.org
   relayer-client:
     image: synapseweb3/relayer
     build: relayer

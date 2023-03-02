@@ -37,7 +37,7 @@ class ProxyHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(response.content)
 
-PORT = 8080
+PORT = 10001
 with socketserver.TCPServer(("0.0.0.0", PORT), ProxyHandler) as httpd:
     print("serving at port", PORT)
     httpd.serve_forever()
