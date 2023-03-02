@@ -67,7 +67,8 @@ genesis_root = "0x4b363db94e286120d76eb905340fdd4e54bfe9f06bf33ff6cf5ad27f511bfe
 initial_checkpoint = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef"
 key_name = 'relayer_eth_wallet'
 rpc_addr_pool = [
-  "http://192.168.4.101:8080"
+  "https://www.lightclientdata.org",
+  "https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60"
 ]
 rpc_port = 8545
 [chains.forks]
@@ -77,8 +78,8 @@ bellatrix = { epoch = 144896, fork_version = "0x02000000" }
 
 [[chains]]
 id = 'ibc-ckb-1'
-ckb_rpc = "http://192.168.3.101:8088"
-ckb_indexer_rpc = "http://192.168.3.101:8080"
+ckb_rpc = "https://testnet.ckbapp.dev"
+ckb_indexer_rpc = "https://testnet.ckbapp.dev"
 lightclient_contract_typeargs = "0xb7fcfa4ad253ddd60481bdd35331a634ff985fdb3b3fab4e1066cf97faf40315"
 lightclient_lock_typeargs = "0xd6eb3b34c445a1fe914f4e22c13380cf3b6102d9c2b949a8544d1a2f72a8b6c7"
 key_name = "relayer_ckb_wallet"
