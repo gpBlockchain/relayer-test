@@ -1,14 +1,67 @@
 version: '3.3'
 services:
+  proxy-light-consensus-client:
+    image: 3156004029/proxy:main
+    ports:
+      - "8080:8080"
+    environment:
+      - MOCK_URL=https://www.lightclientdata.org
+    networks:
+      nn1:
+        ipv4_address: 192.168.4.101
+  proxy-light-exec-client:
+    image: 3156004029/proxy:main
+    ports:
+      - "8083:8080"
+    environment:
+      - MOCK_URL=https://ethereum.blockpi.network/v1/rpc/public
+    networks:
+      nn2:
+        ipv4_address: 192.168.5.101
+  proxy-ckb-client:
+    image: 3156004029/proxy:main
+    ports:
+      - "8081:8080"
+    environment:
+      - MOCK_URL=https://testnet.ckbapp.dev
+    networks:
+      nn:
+        ipv4_address: 192.168.3.101
   relayer-client:
     image: 3156004029/relayer:main
     volumes:
       - ./data/relayer:/home
-
+    depends_on:
+      - proxy-light-consensus-client
+      - proxy-light-exec-client
+      - proxy-ckb-client
   verify-client:
     image: 3156004029/verify:main
     ports:
       - '8545:8545'
     volumes:
       - ./data/verify:/home
+    depends_on:
+      - proxy-light-consensus-client
+      - proxy-light-exec-client
+      - proxy-ckb-client
+networks:
+  nn:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.3.0/24
+  nn1:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.4.0/24
 
+  nn2:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.5.0/24
