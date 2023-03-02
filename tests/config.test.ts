@@ -20,7 +20,6 @@ describe('config chainid is error', function () {
             fs.renameSync(tempModifyConfigVerifier, outputFilename);
         })
         await step("2.start verfier serv", async () => {
-            console.log("start vrefier serv");
             const keyWord = child_process.execSync(`bash ${startCmd}`);
             assert(keyWord.toString('utf-8') === "no configuration file provided: not found", "check config error not found key words");
         })
