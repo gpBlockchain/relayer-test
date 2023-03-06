@@ -14,6 +14,7 @@
     "@ckb-lumos/lumos": "v0.20.0-alpha.1",
     "@ckb-lumos/rpc": "v0.20.0-alpha.1",
     "dotenv": "^16.0.1",
+    "ethers": "^6.0.8",
     "mochawesome-merge": "^4.2.1",
     "npm-run-all": "^4.1.5"
   },
