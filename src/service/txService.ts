@@ -4,6 +4,8 @@ import {TransactionSkeletonType} from "@ckb-lumos/helpers";
 import {request, Sleep} from "../utils/util";
 import {Hash, HexNumber, HexString} from "@ckb-lumos/base/lib/primitive";
 import {CellDep, Input, Output} from "@ckb-lumos/base/lib/api";
+import {CKBComponents} from "@ckb-lumos/rpc/lib/types/api";
+import {formatter as paramsFmts} from "@ckb-lumos/rpc/lib/paramsFormatter";
 
 export async function txAddParam(tx: TransactionSkeletonType,) {
 
@@ -64,6 +66,7 @@ export interface getLockCellOpt{
     data?:string
 }
 
+
 export  function getLockCell(opt:getLockCellOpt):Cell{
     const toScript = helpers.parseAddress(opt.address, {config: CKB_CONFIG});
     let cell:Cell =  {
@@ -96,4 +99,16 @@ export async function addTransaction(tx: TransactionSkeletonType, addTxMsg: AddT
     }
     return tx;
 
+}
+type CyclesResponse={
+    cycles:string;
+}
+
+export async function estimate_cycles(CKB_RPC_URL:string,tx: CKBComponents.RawTransaction) :Promise<CyclesResponse>{
+    const res = await request(1, CKB_RPC_URL, "estimate_cycles", [
+        paramsFmts.toRawTransaction(tx)
+    ]);
+    return {
+        cycles:res.cycles
+    };
 }
