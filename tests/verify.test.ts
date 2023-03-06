@@ -111,6 +111,7 @@ describe('Full Process', function () {
                     ckbUrl: CKB_RPC_URL,
                     outputCells: [await EthLightClientBusinessContract.getOutPutCell({
                         address: generateAccountFromPrivateKey(account1_private).address,
+                        // todo cell need 158 ,auto calculate cell need the smallest capacity
                         amount: "158"
                     }, {
                         ckbRpc: CKB_RPC_URL,
