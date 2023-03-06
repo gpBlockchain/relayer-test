@@ -114,6 +114,7 @@ describe('Full Process', function () {
                         amount: "158"
                     }, {
                         ckbRpc: CKB_RPC_URL,
+                        //  todo check  forcerelay_getForcerelayCkbTransaction -> deps[0] == ibcScriptDep && ibcScriptDep[1] == verifyScriptDep
                         ibcScriptDep: cellDeps[1],
                         verifyScriptDep: cellDeps[0],
                     })],
