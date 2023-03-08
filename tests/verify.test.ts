@@ -1,4 +1,4 @@
-import {configUpdate, step} from "./utils/util";
+import {configUpdate, pollVerify, step} from "./utils/util";
 import {account1_private, CKB_RPC_URL, eth_provider, RPCClient, VERIFIER_RPC_URL} from "./config/config";
 import {forceRelayGetForceRelayCkbTransaction} from "../src/service/verifierService";
 import {OTHER_SCRIPTS} from "../src/config/config";
@@ -13,18 +13,17 @@ import {buildTransactionWithTxType} from "../src/service/transfer";
 import {toCellDep} from "@ckb-lumos/rpc/lib/resultFormatter";
 import {EthLightClientBusinessContract} from "../src/service/contract/ethLightClientBusinessContract";
 import {blockchain} from "@ckb-lumos/base";
+import { sh } from "../src/utils/sh";
+import {Sleep} from "../src/utils/util";
 
 describe('Full Process', function () {
-
     this.timeout(1000_000)
+    let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
-            if(await configUpdate()){
+            if(await configUpdate() && await pollVerify(randTxHash, 10000)){
                 console.log("service start success!!")
             }
-        })
-        await step("Wait for verify rpc to start", async () => {
-            // todo
         })
         await step("Get information of verify verification contract", async () => {
             let checkVerify = false;
@@ -61,7 +60,6 @@ describe('Full Process', function () {
                 /**
                  * query not exist hash will return error msg for  verify range
                  */
-                let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
                 await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, randTxHash);
             } catch (e) {
                 const regex = /\[(\d+),\s*(\d+)\]/;

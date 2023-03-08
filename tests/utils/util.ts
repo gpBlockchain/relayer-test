@@ -1,10 +1,11 @@
 import {expect} from "chai";
 import {StepInterface} from "allure-js-commons/dist/src/Allure";
 import {allure} from "allure-mocha/dist/MochaAllureReporter";
-import {path, rootPath, RPCClient} from "../config/config";
+import {path, rootPath, RPCClient, VERIFIER_RPC_URL} from "../config/config";
 import {Sleep} from "../../src/utils/util";
 import {sh} from "../../src/utils/sh";
 import fetch from "node-fetch";
+import {forceRelayGetForceRelayCkbTransaction} from "../../src/service/verifierService";
 
 export async function expectedThrow(promise: Promise<any>, msg = "") {
     try {
@@ -164,4 +165,19 @@ export async function configUpdate(): Promise<boolean>{
         return true;
     }
     return false;
+}
+
+export async function pollVerify(randTxHash, count): Promise<boolean>{
+    for (let i = 0; i < count; i++) {
+        try{
+            await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, randTxHash);
+            await Sleep(1000);
+        }catch (e){
+            console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
+            const sub = e.toString().includes("FetchError: request");
+            if (sub) {
+                return true;
+            }
+        }
+    }return false;
 }
