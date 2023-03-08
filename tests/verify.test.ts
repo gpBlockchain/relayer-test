@@ -61,7 +61,7 @@ describe('Full Process', function () {
                 /**
                  * query not exist hash will return error msg for  verify range
                  */
-                let randTxHash = "0x8e526550d35ae89444bfccf613740b1e3426227e44c5d061e1fb5919bee80a71"
+                let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
                 await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, randTxHash);
             } catch (e) {
                 const regex = /\[(\d+),\s*(\d+)\]/;

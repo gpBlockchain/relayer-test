@@ -156,10 +156,10 @@ export async function configUpdate(): Promise<boolean>{
     console.log(`exec entrypoint.sh:${keyWord5}`);
 
     console.log(`first start relay`);
-    const keyWord6 = await sh(`cd ${startCmdPath} && bash start.sh relayer-docker-compose.yml`);
+    const keyWord6 = await sh(`cd ${startCmdPath} && nohup bash start.sh relayer-docker-compose.yml > relay.log 2>&1 &`);
     console.log(`start relayer service:${keyWord6}`);
     if (await checkLightCellExist(`ibc-ckb-${randomId}`, 100)){
-        const keyWord7 = await sh(`cd ${startCmdPath} && bash start.sh verifier-docker-compose.yml`);
+        const keyWord7 = await sh(`cd ${startCmdPath} && nohup bash start.sh verifier-docker-compose.yml > verify.log 2>&1 &`);
         console.log(`start verifier service:${keyWord7}`);
         return true;
     }
