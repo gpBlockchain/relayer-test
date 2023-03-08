@@ -162,6 +162,7 @@ export async function configUpdate(): Promise<boolean> {
     const keyWord6 = await sh(`cd ${startCmdPath} && nohup bash start.sh relayer-docker-compose.yml > relay.log 2>&1 &`);
     console.log(`start relayer service:${keyWord6}`);
     if (await checkLightCellExist(`ibc-ckb-${randomId}`, 300)) {
+        await Sleep(1000)
         const keyWord7 = await sh(`cd ${startCmdPath} && nohup bash start.sh verifier-docker-compose.yml > verify.log 2>&1 &`);
         console.log(`start verifier service:${keyWord7}`);
         return true;
