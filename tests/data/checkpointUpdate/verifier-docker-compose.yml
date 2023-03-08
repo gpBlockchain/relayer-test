@@ -1,6 +1,0 @@
-version: '3.3'
-services:
-  verify-client:
-    image: 3156004029/verify:main
-    volumes:
-      - ./data/verify:/home

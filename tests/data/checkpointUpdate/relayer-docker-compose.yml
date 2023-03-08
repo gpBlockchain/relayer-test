@@ -1,6 +1,0 @@
-version: '3.3'
-services:
-  relayer-client:
-    image: 3156004029/relayer:main
-    volumes:
-      - ./data/relayer:/home
