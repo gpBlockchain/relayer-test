@@ -73,7 +73,7 @@ describe('Full Process', function () {
                     console.log(`verify range:[${start}, ${end}]`);  // 输出 [16736036, 16746926]
                     verifyRange = [Number(start), Number(end)]
                 } else {
-                    console.log('未匹配到内容');
+                    console.log(`未匹配到内容,err:${e}`);
                 }
             }
         })
