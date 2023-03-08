@@ -147,7 +147,7 @@ export async function configUpdate(): Promise<boolean>{
     console.log(JSON.stringify(keyWord));
     const keyWord2 = await sh(`cd ${verifierConfigPath} && sed -ig s/0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a/${res1.data.root}/g helios.toml`);
     console.log(JSON.stringify(keyWord2));
-    const randomId = getRandomNum(500, 1000);
+    const randomId = getRandomNum(2, 100);
     console.log(`randomId:${randomId}`);
     const keyWord3 = await sh(`cd ${relayerConfigPath} && sed -ig s/'ibc-ckb-1'/'ibc-ckb-${randomId}'/g config.toml`);
     console.log(`exec config.toml:${keyWord3}`);

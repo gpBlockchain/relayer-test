@@ -1,13 +1,5 @@
 import {configUpdate, pollVerify, step} from "./utils/util";
-import {
-    account1_private,
-    CKB_RPC_URL,
-    eth_provider,
-    path,
-    rootPath,
-    RPCClient,
-    VERIFIER_RPC_URL
-} from "./config/config";
+import {account1_private, CKB_RPC_URL, eth_provider, RPCClient, VERIFIER_RPC_URL} from "./config/config";
 import {forceRelayGetForceRelayCkbTransaction} from "../src/service/verifierService";
 import {OTHER_SCRIPTS} from "../src/config/config";
 import {
@@ -27,13 +19,7 @@ import {Sleep} from "../src/utils/util";
 describe('Full Process', function () {
     this.timeout(1000_0000)
     let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
-    const srcDataPath = path.join(rootPath, "../build/")
-    const checkpointUpdatePath = path.join(rootPath, 'data/checkpointUpdate/');
     beforeEach(async () => {
-        await step("env prepare", async() => {
-            const status = await sh(`mkdir -p ${checkpointUpdatePath} && cp -rf ${srcDataPath} ${checkpointUpdatePath}`);
-            console.log(`status:${JSON.stringify(status)}`);
-        })
         await step("Start relay and verify using docker-compose", async () => {
             if(await configUpdate()){
                 console.log("services start success!!")
@@ -42,9 +28,6 @@ describe('Full Process', function () {
                 }
             }
         })
-    })
-
-    it("services ready", async () => {
         await step("Get information of verify verification contract", async () => {
             let checkVerify = false;
 
@@ -212,14 +195,6 @@ describe('Full Process', function () {
     it.skip("decode witnessArgs", async () => {
         blockchain.WitnessArgs.unpack("0x0")
     })
-
-    afterEach(async () => {
-        await step("env clear", async() => {
-            const status = await sh(`cd ${checkpointUpdatePath} && bash stop.sh && rm -rf  ${checkpointUpdatePath}`);
-            console.log(`status:${JSON.stringify(status)}`);
-        })
-    })
-
 });
 
 
