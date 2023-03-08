@@ -20,7 +20,7 @@ describe('Full Process', function () {
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
             if (await configUpdate()){
-                console.log("start services")
+                console.log("debug services")
             }
         })
         await step("Wait for verify rpc to start", async () => {
