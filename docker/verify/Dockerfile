@@ -2,7 +2,7 @@ FROM nervos/ckb-docker-builder:bionic-rust-1.67.1 as synapseweb3-forcerelay-veri
 
 WORKDIR /
 
-RUN git clone https://github.com/synapseweb3/forcerelay-verifier
+RUN git clone https://github.com/synapseweb3/forcerelay-verifier.git
 
 RUN cd forcerelay-verifier \
     && git checkout forcerelay-sdk  \
