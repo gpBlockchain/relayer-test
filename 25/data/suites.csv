@@ -1,3 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Thu Mar 02 05:53:38 GMT 2023","Thu Mar 02 05:53:38 GMT 2023","13","demo","","","","","dd",""
-"passed","Thu Mar 02 05:53:36 GMT 2023","Thu Mar 02 05:53:38 GMT 2023","2184","config chainid is error","","","","","id is not exist on chain, expect Error: forcerelay error: no lightclient cell deployed on ckb",""
