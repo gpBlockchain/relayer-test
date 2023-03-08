@@ -13,20 +13,20 @@ import {buildTransactionWithTxType} from "../src/service/transfer";
 import {toCellDep} from "@ckb-lumos/rpc/lib/resultFormatter";
 import {EthLightClientBusinessContract} from "../src/service/contract/ethLightClientBusinessContract";
 import {blockchain} from "@ckb-lumos/base";
-import { sh } from "../src/utils/sh";
-import {Sleep} from "../src/utils/util";
 
 describe('Full Process', function () {
     this.timeout(1000_0000)
     let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
-            if(await configUpdate()){
-                console.log("services start success!!")
-                if(await pollVerify(randTxHash, 10000)){
-                    console.log("verifier rpc start success!!")
-                }
+            if(!(await configUpdate())){
+                throw new Error("configUpdate failed")
             }
+            console.log("services start success!!")
+            if(!(await pollVerify(randTxHash, 10000))){
+                throw new Error("pollVerify failed")
+            }
+            console.log("verifier rpc start success!!")
         })
         await step("Get information of verify verification contract", async () => {
             let checkVerify = false;
