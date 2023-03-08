@@ -1,4 +1,4 @@
-import {step} from "./utils/util";
+import {configUpdate, step} from "./utils/util";
 import {account1_private, CKB_RPC_URL, eth_provider, RPCClient, VERIFIER_RPC_URL} from "./config/config";
 import {forceRelayGetForceRelayCkbTransaction} from "../src/service/verifierService";
 import {OTHER_SCRIPTS} from "../src/config/config";
@@ -19,7 +19,9 @@ describe('Full Process', function () {
     this.timeout(1000_000)
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
-            // todo
+            if (await configUpdate()){
+                console.log("start services")
+            }
         })
         await step("Wait for verify rpc to start", async () => {
             // todo
