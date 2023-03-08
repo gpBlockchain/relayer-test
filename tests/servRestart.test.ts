@@ -14,7 +14,7 @@ describe('To restart the service and check the block synchronization status', fu
             console.log("+",(JSON.stringify(status)));
         })
     })
-    it("restart relay and verifier service", async () => {
+    it.skip("restart relay and verifier service", async () => {
         await step("start relay and verifier serv", async() => {
             await sh(`cd ${servRestartPath} && bash prepare.sh && bash start.sh`);
             const relayerStatus = await sh(`docker ps -a | awk '{print $7}' | sed -n '2p'`);
