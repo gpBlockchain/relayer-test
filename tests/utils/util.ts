@@ -4,6 +4,7 @@ import {allure} from "allure-mocha/dist/MochaAllureReporter";
 import {path, rootPath, RPCClient} from "../config/config";
 import {Sleep} from "../../src/utils/util";
 import {sh} from "../../src/utils/sh";
+import fetch from "node-fetch";
 
 export async function expectedThrow(promise: Promise<any>, msg = "") {
     try {

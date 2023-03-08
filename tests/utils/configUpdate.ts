@@ -1,6 +1,7 @@
 import {path, rootPath} from "../config/config";
 import {sh} from "../../src/utils/sh";
 import {checkLightCellExist, getRandomNum} from "./util";
+import fetch from "node-fetch";
 
 it("test",async function (){
     this.timeout(1000_10000)
