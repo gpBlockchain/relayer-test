@@ -2,9 +2,9 @@ FROM nervos/ckb-docker-builder:bionic-rust-1.67.1 as synapseweb3-relayer-docker-
 
 WORKDIR /
 
-RUN git clone https://github.com/synapseweb3/relayer.git
+RUN git clone https://github.com/synapseweb3/forcerelay.git
 
-RUN cd relayer \
+RUN cd forcerelay \
     && git checkout main \
     && cargo build
 
@@ -28,7 +28,7 @@ RUN set -eux; \
     ca-certificates
 
 COPY --from=synapseweb3-relayer-docker-builder \
-     /relayer/target/debug/hermes \
+     /forcerelay/target/debug/hermes \
      /usr/local/bin/
 
 WORKDIR /home
