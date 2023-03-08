@@ -171,13 +171,13 @@ export async function pollVerify(randTxHash, count): Promise<boolean>{
     for (let i = 0; i < count; i++) {
         try{
             await Sleep(1000);
-            await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL , randTxHash);
-        }catch (e){
-            console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
-            const sub = e.toString().includes("FetchError: request");
-            if (!sub) {
+            const flag = await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL , randTxHash);
+            if (JSON.stringify(flag).includes("version")){
+                console.log("call success!!")
                 return true;
             }
+        }catch (e){
+            console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
         }
     }return false;
 }
