@@ -21,7 +21,7 @@ describe('Full Process', function () {
     let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
-            if(await pollVerify(randTxHash, 10000)){
+            if(await configUpdate() && await pollVerify(randTxHash, 10000)){
                 console.log("service start success!!")
             }
         })
