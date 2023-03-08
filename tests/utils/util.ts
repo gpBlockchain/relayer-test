@@ -122,8 +122,8 @@ export async function checkLightCellExist(cellName: string, tryCount: number): P
                 },
                 scriptType: 'type'
             }, "asc",
-            "0x1",)
-        console.log(`ret.objects.length:`,ret.objects.length)
+            "0x10",)
+        console.log(`ret.objects:`,JSON.stringify(ret.objects))
         if (ret.objects.length === 1 && ret.objects[0].output.type.args === str2hex(cellName)) {
             console.log("find it ")
             return true;
@@ -149,7 +149,7 @@ export async function configUpdate(): Promise<boolean> {
     console.log(JSON.stringify(keyWord));
     const keyWord2 = await sh(`cd ${verifierConfigPath} && sed -ig s/0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a/${res1.data.root}/g helios.toml`);
     console.log(JSON.stringify(keyWord2));
-    const randomId = getRandomNum(2, 100);
+    const randomId = getRandomNum(2, 10000);
     console.log(`randomId:${randomId}`);
     const keyWord3 = await sh(`cd ${relayerConfigPath} && sed -ig s/'ibc-ckb-1'/'ibc-ckb-${randomId}'/g config.toml`);
     console.log(`exec config.toml:${keyWord3}`);
