@@ -19,9 +19,7 @@ describe('Full Process', function () {
     this.timeout(1000_000)
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
-            if (await configUpdate()){
-                console.log("debug services")
-            }
+            //todo
         })
         await step("Wait for verify rpc to start", async () => {
             // todo
