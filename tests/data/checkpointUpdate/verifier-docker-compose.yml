@@ -3,6 +3,6 @@ services:
   verify-client:
     image: 3156004029/verify:main
     ports:
-      - '8545:8545'
+      - '8555:8555'
     volumes:
       - ./data/verify:/home
