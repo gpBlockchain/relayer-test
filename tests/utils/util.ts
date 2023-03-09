@@ -191,7 +191,7 @@ export async function configUpdate(): Promise<boolean> {
         const keyWord2 = await sh(`cd ${verifierConfigPath} && sed -ig s/0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a/${hashRanges[0]}/g helios.toml`);
         console.log(JSON.stringify(keyWord2));
         const keyWord7 = await sh(`cd ${startCmdPath} && nohup bash start.sh verifier-docker-compose.yml > verify.log 2>&1 &`);
-        await waitDockerUp("checkpointupdate-verify-client-1", 600, 20)
+        await waitDockerUp("verify", 600, 20)
         console.log(`start verifier service:${keyWord7}`);
         // check service start
         return true;
@@ -242,7 +242,7 @@ async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
     }
 }
 
-async function checkDockerUp(dockerName: string): Promise<boolean> {
+export async function checkDockerUp(dockerName: string): Promise<boolean> {
     try {
         const ret = await sh(`docker ps -a | grep ${dockerName}`)
         // 检查do
