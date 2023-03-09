@@ -208,7 +208,7 @@ export async function pollVerify(randTxHash, count): Promise<boolean> {
             return true;
         } catch (e) {
             console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
-            if (!(e.toString().includes("ECONNREFUSED"))) {
+            if (!(e.toString().includes("ECONNREFUSED")||e.toString().includes("socket hang up"))  ) {
                 console.log("pollVerify succ")
                 return true;
             }
