@@ -235,21 +235,23 @@ async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
 
         if (upStatus == true) {
             //表示docker启动一段时间后退出
-            const logs = await getLogByDockerName(dockerName)
-            console.log('logs:', logs)
+            // const logs = await getLogByDockerName(dockerName)
+            // console.log('logs:', logs)
             throw new Error("start failed")
 
         }
     }
-    const logs = await getLogByDockerName(dockerName)
-    console.log('logs:', logs)
+    // const logs = await getLogByDockerName(dockerName)
+    // console.log('logs:', logs)
     throw new Error("start failed")
 
 }
 
 export async function checkDockerUp(dockerName: string): Promise<boolean> {
     try {
-        const ret = await sh(`docker ps -a | grep ${dockerName}`)
+        let ret = await sh(`docker ps -a`)
+        console.log("ret:",ret)
+        ret = await sh(`docker ps -a | grep ${dockerName}`)
         // 检查do
         console.log(ret)
         if (JSON.stringify(ret).includes("Up")) {
