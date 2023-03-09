@@ -203,12 +203,12 @@ export async function pollVerify(randTxHash, count): Promise<boolean> {
     for (let i = 0; i < count; i++) {
         try {
             await Sleep(1000);
-            const flag = await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, randTxHash);
-            console.log("pollVerify succ")
+            const res = await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, randTxHash);
+            console.log("pollVerify succ:",res)
             return true;
         } catch (e) {
             console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
-            if (!(e.toString().includes("ECONNREFUSED")||e.toString().includes("socket hang up"))  ) {
+            if (!(e.toString().includes("FetchError"))) {
                 console.log("pollVerify succ")
                 return true;
             }
