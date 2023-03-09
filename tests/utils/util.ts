@@ -243,14 +243,20 @@ async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
 }
 
 async function checkDockerUp(dockerName: string): Promise<boolean> {
-    const ret = await sh(`docker ps -a | grep ${dockerName}`)
-    // 检查do
-    console.log(ret)
-    if (JSON.stringify(ret).includes("Up")) {
-        console.log("is up ")
+    try {
+        const ret = await sh(`docker ps -a | grep ${dockerName}`)
+        // 检查do
+        console.log(ret)
+        if (JSON.stringify(ret).includes("Up")) {
+            console.log("is up ")
+            return true;
+        }
         return true;
+    }catch (e){
+        console.log(e)
+        return false;
     }
-    return true;
+
 }
 
 async function getLogByDockerName(dockerName: string): Promise<string> {
