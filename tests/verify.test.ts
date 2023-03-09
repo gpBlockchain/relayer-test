@@ -79,7 +79,7 @@ describe('Full Process', function () {
         })
         let txs;
         await step("Get the hash of an eth transaction within the range of transactions verify can verify", async () => {
-            for (let i = verifyRange[0]; i < verifyRange[1]; i++) {
+            for (let i = verifyRange[0]; i <= verifyRange[1]; i++) {
                 txs = await eth_provider.getBlock(verifyRange[0]).then((block) => {
                     return block.transactions
                 }).catch((error) => {
