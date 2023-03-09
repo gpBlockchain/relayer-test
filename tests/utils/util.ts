@@ -137,7 +137,7 @@ export async function configUpdate(): Promise<boolean>{
     const res = await response.json();
     console.log(`finality_update:${res}`);
     console.log(`finalized_header_slot:res.data.finalized_header.slot`);
-    const response1 = await fetch(`https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60/eth/v1/beacon/headers/${res.data.finalized_header.slot -32}`);
+    const response1 = await fetch(`https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60/eth/v1/beacon/headers/${res.data.finalized_header.slot}`);
     const res1 = await response1.json();
     console.log(res1);
     console.log(`root:${res1.data.root}`);
