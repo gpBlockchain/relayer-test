@@ -24,9 +24,9 @@ export async function step(name: string, body: (step: StepInterface) => any): Pr
     } catch (TypeError) {
         if (TypeError.toString().includes("Cannot read properties of undefined (reading 'step')")) {
 
-    return await wrap(body)()
-    }
-    throw TypeError
+            return await wrap(body)()
+        }
+        throw TypeError
     }
 }
 
@@ -112,6 +112,33 @@ export function str2hex(str) {
     return arr.join('');
 }
 
+export async function getIbcCellRangeByIbcName(ibcCellName: string): Promise<string[]> {
+    if (!await checkLightCellExist(ibcCellName, 10)) {
+        throw new Error("wait cell create")
+    }
+
+    const ret = await RPCClient.getCells({
+            script: {
+                codeHash: "0x529dd7087986a7591e0fb860a49111915b8ba68b6c97656bbaafa94b223dcc88",
+                hashType: "type",
+                args: str2hex(ibcCellName)
+            },
+            scriptType: 'type'
+        }, "asc",
+        "0x1",)
+    return decodeIbcOutPutData(ret.objects[0].outputData)
+}
+
+//0x00205a0000000000ff655a000000000044fcd6ea1b308ac3f3bb5dff17f429f5190b62bf02fbf3a32b35ebfb23acd9d25cf11cafd05ae6eab1a10beccb37632dd9bf99122d75b8475183dd8f6a96c389
+// begin : 44fcd6ea1b308ac3f3bb5dff17f429f5190b62bf02fbf3a32b35ebfb23acd9d2
+// end: 5cf11cafd05ae6eab1a10beccb37632dd9bf99122d75b8475183dd8f6a96c389
+// [begin,end]
+function decodeIbcOutPutData(outputDatum: string) {
+
+    console.log(outputDatum.length)
+    return [`0x${outputDatum.substr(34, 64)}`, `0x${outputDatum.substr(98)}`]
+}
+
 export async function checkLightCellExist(cellName: string, tryCount: number): Promise<boolean> {
     for (let i = 0; i < tryCount; i++) {
         const ret = await RPCClient.getCells({
@@ -122,8 +149,8 @@ export async function checkLightCellExist(cellName: string, tryCount: number): P
                 },
                 scriptType: 'type'
             }, "asc",
-            "0x10",)
-        console.log(`ret.objects:`,JSON.stringify(ret.objects))
+            "0x1",)
+        console.log(`ret.objects:`, JSON.stringify(ret.objects))
         if (ret.objects.length === 1 && ret.objects[0].output.type.args === str2hex(cellName)) {
             console.log("find it ")
             return true;
@@ -147,8 +174,6 @@ export async function configUpdate(): Promise<boolean> {
     const verifierConfigPath = path.join(rootPath, '/data/checkpointUpdate/data/verify/');
     const keyWord = await sh(`cd ${relayerConfigPath} && sed -ig s/0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef/${res1.data.root}/g config.toml`);
     console.log(JSON.stringify(keyWord));
-    const keyWord2 = await sh(`cd ${verifierConfigPath} && sed -ig s/0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a/${res1.data.root}/g helios.toml`);
-    console.log(JSON.stringify(keyWord2));
     const randomId = getRandomNum(2, 10000);
     console.log(`randomId:${randomId}`);
     const keyWord3 = await sh(`cd ${relayerConfigPath} && sed -ig s/'ibc-ckb-1'/'ibc-ckb-${randomId}'/g config.toml`);
@@ -162,9 +187,13 @@ export async function configUpdate(): Promise<boolean> {
     const keyWord6 = await sh(`cd ${startCmdPath} && nohup bash start.sh relayer-docker-compose.yml > relay.log 2>&1 &`);
     console.log(`start relayer service:${keyWord6}`);
     if (await checkLightCellExist(`ibc-ckb-${randomId}`, 300)) {
-        await Sleep(1000)
+        const hashRanges = await getIbcCellRangeByIbcName(`ibc-ckb-${randomId}`)
+        const keyWord2 = await sh(`cd ${verifierConfigPath} && sed -ig s/0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a/${hashRanges[0]}/g helios.toml`);
+        console.log(JSON.stringify(keyWord2));
         const keyWord7 = await sh(`cd ${startCmdPath} && nohup bash start.sh verifier-docker-compose.yml > verify.log 2>&1 &`);
+        await waitDockerUp("checkpointupdate-verify-client-1", 600, 20)
         console.log(`start verifier service:${keyWord7}`);
+        // check service start
         return true;
     }
     return false;
@@ -179,11 +208,52 @@ export async function pollVerify(randTxHash, count): Promise<boolean> {
             return true;
         } catch (e) {
             console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
-            if(!(e.toString().includes("ECONNREFUSED"))){
+            if (!(e.toString().includes("ECONNREFUSED"))) {
                 console.log("pollVerify succ")
                 return true;
             }
         }
     }
     return false;
+}
+
+async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
+    let upStatus = false;
+    for (let i = 0; i < waitCount; i++) {
+        await Sleep(1000)
+        if (await checkDockerUp(dockerName)) {
+            // 启动阶段
+            upStatus = true;
+            upTime--;
+            waitCount++;
+            if (upTime < 0) {
+                // 持续启动 upTime 说明启动成功
+                return
+            }
+            continue;
+        }
+
+        if (upStatus == true) {
+            //表示docker启动一段时间后退出
+            const logs = await getLogByDockerName(dockerName)
+            console.log('logs:', logs)
+            return false;
+        }
+    }
+}
+
+async function checkDockerUp(dockerName: string): Promise<boolean> {
+    const ret = await sh(`docker ps -a | grep ${dockerName}`)
+    // 检查do
+    console.log(ret)
+    if (JSON.stringify(ret).includes("Up")) {
+        console.log("is up ")
+        return true;
+    }
+    return true;
+}
+
+async function getLogByDockerName(dockerName: string): Promise<string> {
+    // @ts-ignore
+    return (await sh(`docker logs ${dockerName}`))
 }
