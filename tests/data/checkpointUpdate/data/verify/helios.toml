@@ -1,6 +1,6 @@
 [mainnet]
 consensus_rpc = "https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60"
-execution_rpc = "https://ethereum.blockpi.network/v1/rpc/public"
+execution_rpc = "https://eth-mainnet.g.alchemy.com/v2/aHcAKpNljHLATUlY8PIVOtKh6MJbOode"
 rpc_port = 8545
 checkpoint = "0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a"
 ckb_rpc = "https://testnet.ckbapp.dev"
