@@ -27,7 +27,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: docker/relayer
-          platforms: linux/arm64
           push: true
-          tags: 3156004029/relayer:arm64
+          tags: 3156004029/relayer:main
 
