@@ -1,7 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"broken","Wed Mar 08 09:52:21 GMT 2023","Wed Mar 08 09:53:19 GMT 2023","57637","Full Process","","","","","Verify a tx on eth using ckb",""
-"skipped","Wed Mar 08 09:53:19 GMT 2023","Wed Mar 08 09:53:19 GMT 2023","1","Full Process","","","","","transfer ver 2 empty",""
-"passed","Wed Mar 08 09:52:14 GMT 2023","Wed Mar 08 09:52:21 GMT 2023","6948","config chainid is error","","","","","id is not exist on chain, expect Error: forcerelay error: no lightclient cell deployed on ckb",""
-"skipped","Wed Mar 08 09:52:21 GMT 2023","Wed Mar 08 09:52:21 GMT 2023","0","To restart the service and check the block synchronization status","","","","","restart relay and verifier service",""
-"skipped","Wed Mar 08 09:53:19 GMT 2023","Wed Mar 08 09:53:19 GMT 2023","0","Full Process","","","","","decode witnessArgs",""
-"passed","Wed Mar 08 09:52:21 GMT 2023","Wed Mar 08 09:52:21 GMT 2023","13","demo","","","","","dd",""
