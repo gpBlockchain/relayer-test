@@ -8,7 +8,7 @@ import {
     signTransaction,
 } from "../src/service/txService";
 import {deployContractByPath, DeployType} from "../src/service/deploy";
-import {helpers} from "@ckb-lumos/lumos";
+import {BI, helpers} from "@ckb-lumos/lumos";
 import {buildTransactionWithTxType} from "../src/service/transfer";
 import {toCellDep} from "@ckb-lumos/rpc/lib/resultFormatter";
 import {EthLightClientBusinessContract} from "../src/service/contract/ethLightClientBusinessContract";
@@ -16,7 +16,7 @@ import {blockchain} from "@ckb-lumos/base";
 
 describe('Full Process', function () {
     this.timeout(1000_0000)
-    let randTxHash = "0xd74af04ccc9f890f43e8ae80da79d3d83f224d2ba0a710c44a73b929dd60e765";
+    let randTxHash
     beforeEach(async () => {
         await step("Start relay and verify using docker-compose", async () => {
             if(!(await configUpdate())){
@@ -27,6 +27,9 @@ describe('Full Process', function () {
                 throw new Error("pollVerify failed")
             }
             console.log("verifier rpc start success!!")
+        })
+        await step("get latest hash",async ()=>{
+            randTxHash = await getLatestHashByBlockNum(-1)
         })
         await step("Get information of verify verification contract", async () => {
             let checkVerify = false;
@@ -192,14 +195,115 @@ describe('Full Process', function () {
 
     })
 
+    it.skip("decode ", async () => {
+
+        const witness = blockchain.WitnessArgs.unpack("0x910100001000000055000000910100004100000046738825e2e33e515f6ea685bfe48e040704f074c145a27fbf8a227544490e702bb487365908cd53aedf78e57a3ff3423e704565c844a3c9a3dc3fc91384d1650138010000380100001400000034000000380000003c000000763e99ef3ea00209f1ada08a0cf019a2f889badb7daa9e4a5c930b2a35a6b7e50000000000000000fc00000008000000f40000001000000080000000f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000056000000000099350100000000000d333c220555090ada5f38420ef4aca351f58c8424e2372b4fe55b8e1120f6b4bdaa6a6c50eb246765d8d05e801f71e09dfbb130faf1467fde4b7acd107f5d05063fe4a10dda7368d6a53ff96639a18614c11f7f49718a35b2cdcc9a8e0a42fb00000000")
+        console.log((witness))
+    })
     it.skip("decode witnessArgs", async () => {
-        blockchain.WitnessArgs.unpack("0x0")
+        const witness = blockchain.WitnessArgs.pack({
+            inputType: "0x380100001400000034000000380000003c000000763e99ef3ea00209f1ada08a0cf019a2f889badb7daa9e4a5c930b2a35a6b7e50000000000000000fc00000008000000f40000001000000080000000f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000056000000000099350100000000000d333c220555090ada5f38420ef4aca351f58c8424e2372b4fe55b8e1120f6b4bdaa6a6c50eb246765d8d05e801f71e09dfbb130faf1467fde4b7acd107f5d05063fe4a10dda7368d6a53ff96639a18614c11f7f49718a35b2cdcc9a8e0a42fb00000000",
+        })
+        console.log(hex(witness))
+    })
+
+    function hex(arrayBuffer) {
+        return Array.prototype.map.call(
+            new Uint8Array(arrayBuffer),
+            n => n.toString(16).padStart(2, "0")
+        ).join("");
+    }
+
+    it.skip("query tx", async () => {
+        const txMsg = await RPCClient.getTransaction("0x21f32e04a2016c3395023833483a5e026e0e6aadcad9dac2fb407ebbff1cc00c")
+        console.log("txMsg:", hex(txMsg))
+    })
+
+    it.skip("send rand ", async () => {
+
+        const account = generateAccountFromPrivateKey(account1_private);
+        //build type = "ibc-3156004029
+        let txSkeleton = helpers.TransactionSkeleton({});
+        txSkeleton = txSkeleton.update("witnesses", (wits) => wits.push("0x4c01000010000000100000004c01000038010000380100001400000034000000380000003c000000763e99ef3ea00209f1ada08a0cf019a2f889badb7daa9e4a5c930b2a35a6b7e50000000000000000fc00000008000000f40000001000000080000000f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000056000000000099350100000000000d333c220555090ada5f38420ef4aca351f58c8424e2372b4fe55b8e1120f6b4bdaa6a6c50eb246765d8d05e801f71e09dfbb130faf1467fde4b7acd107f5d05063fe4a10dda7368d6a53ff96639a18614c11f7f49718a35b2cdcc9a8e0a42fb00000000"));
+        const tx = await buildTransactionWithTxType(txSkeleton, {
+            ckbUrl: CKB_RPC_URL,
+            from: account.address,
+            inputCells: [
+                // // {
+                // {
+                //     data: "0x",
+                //     cellOutput: {
+                //         capacity: "0x14",
+                //         lock: account.lockScript,
+                //     },
+                //     outPoint: {
+                //         txHash: "0x8e842c7a5a3e1ebb09605c8aebff48507e06814e36ddccd1ef06c7b3f414d875",
+                //         index: "0x1",
+                //     }
+                // },
+                // // }
+            ],
+            deps: [{
+                outPoint: {
+                    txHash: "0xe434764776df1bcbcf3ac96638a37928831c18ab52d1d4464f91d9268f87384b",
+                    index: "0x0"
+                },
+                depType: "code"
+            }, {
+                outPoint: {
+                    txHash: "0xe190989bdb60584170a45fe05573689456edac308390e024eb69dbaee1739865",
+                    index: "0x0"
+                },
+                depType: "code"
+            }],
+            outputCells: [
+                {
+                    data: "0x00005600000000000000560000000000763e99ef3ea00209f1ada08a0cf019a2f889badb7daa9e4a5c930b2a35a6b7e5763e99ef3ea00209f1ada08a0cf019a2f889badb7daa9e4a5c930b2a35a6b7e5",
+                    cellOutput: {
+                        capacity: BI.from("25300000000").toHexString(),
+                        lock: {
+                            codeHash: "0x021bbd06ba4235187f609d67e1d5e51c68bccdc5d6d65c310c7cf8b44ebd6679",
+                            hashType: "type",
+                            args: "0x618c8780241195acb901b433e94ef1fe3c23accc"
+                        },
+                        type: {
+                            codeHash: "0x529dd7087986a7591e0fb860a49111915b8ba68b6c97656bbaafa94b223dcc88",
+                            hashType: "type",
+                            args: "0x6962632d636b622d3131313131313131313131313131313131313131123456789812"
+                        }
+                    },
+                }
+            ],
+        })
+        const signedTx = signTransaction(tx, account1_private)
+        console.log(JSON.stringify(signedTx))
+        const txHash = await RPCClient.sendTransaction(signedTx, "passthrough")
+        console.log('hash:', txHash)
+
     })
 });
 
-
-
-
-
-
-
+/**
+ * This function returns the latest transaction hash by block number.
+ *  If blockNum is -1, it gets the latest block number using eth_provider and uses it as blockNum.
+ *  @param blockNum - the block number for which to get the latest transaction hash (-1: latest)
+ *  @returns a Promise that resolves to a string, which is the hash of the latest transaction in the specified block number.
+ *  @throws an Error if no transaction is found for the specified block number.
+ */
+async function getLatestHashByBlockNum(blockNum: number): Promise<string> {
+    if (blockNum === -1) {
+        blockNum = await eth_provider.getBlockNumber();
+    }
+    let txs
+    for (let i = blockNum; i > 0; i--) {
+        txs = await eth_provider.getBlock(blockNum).then((block) => {
+            return block.transactions
+        }).catch((error) => {
+            console.error(error);
+        });
+        if (txs.length > 1) {
+            return txs[0]
+        }
+    }
+    throw new Error(`not found tx for number :${blockNum}`)
+}
