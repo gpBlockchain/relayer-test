@@ -3,15 +3,16 @@ services:
   relayer-client:
     image: synapseweb3/relayer
     build: relayer
-    volumes:
-      - ./data/relayer/ckb_mmr_storage:/home/ckb_mmr_storage
+#    volumes:
+#      - ./data/relayer/ckb_mmr_storage:/home/ckb_mmr_storage
   verify-client:
     image: synapseweb3/verify
     build: verify
     ports:
       - '8545:8545'
-    volumes:
-      - ./data/verify/ckb_mmr_storage:/home/ckb_mmr_storage
+#    volumes:
+#      - ./data/verify/ckb_mmr_storage:/home/ckb_mmr_storage
+
 #    healthcheck:
 #      test: [ "CMD-SHELL", "curl --fail http://localhost:80/health || exit 1" ]
 #      interval: 30s

@@ -1,5 +1,5 @@
 #!/bin/sh
 set -x
-mkdir ~/.helios/
-cp helios.toml ~/.helios/
-exec helios
+mkdir ~/.forcerelay/
+cp config.toml ~/.forcerelay/
+exec forcerelay
