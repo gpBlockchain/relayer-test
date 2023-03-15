@@ -1,5 +1,5 @@
 #!/bin/sh
 set -x
-mkdir ~/.forcerelay/
-cp config.toml ~/.forcerelay/
-exec forcerelay
+mkdir ~/.forceth/
+cp config.toml ~/.forceth/
+exec forceth

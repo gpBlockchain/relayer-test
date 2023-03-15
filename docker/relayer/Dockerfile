@@ -28,7 +28,7 @@ RUN set -eux; \
     ca-certificates
 
 COPY --from=synapseweb3-relayer-docker-builder \
-     /forcerelay/target/debug/hermes \
+     /forcerelay/target/debug/forcerelay \
      /usr/local/bin/
 
 WORKDIR /home
