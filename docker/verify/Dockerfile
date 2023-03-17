@@ -28,11 +28,11 @@ RUN set -eux; \
     ca-certificates
 
 COPY --from=synapseweb3-forcerelay-verifier-docker-builder \
-     /forcerelay-verifier/target/debug/helios \
+     /forcerelay-verifier/target/debug/forceth \
      /usr/local/bin/
 
 WORKDIR /home
 
-COPY ./helios.toml ./entrypoint.sh /home/
+COPY ./helios.toml ./config.toml ./entrypoint.sh /home/
 
 ENTRYPOINT ["/home/entrypoint.sh"]

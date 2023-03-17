@@ -1,5 +1,5 @@
 #!/bin/sh
 set -x
-mkdir ~/.helios/
-cp helios.toml ~/.helios/
-exec helios
+mkdir ~/.forceth/
+cp config.toml ~/.forceth/
+exec forceth

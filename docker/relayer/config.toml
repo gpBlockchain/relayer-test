@@ -67,7 +67,6 @@ genesis_root = "0x4b363db94e286120d76eb905340fdd4e54bfe9f06bf33ff6cf5ad27f511bfe
 initial_checkpoint = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef"
 key_name = 'relayer_eth_wallet'
 rpc_addr_pool = [
-  "https://www.lightclientdata.org",
   "https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60"
 ]
 rpc_port = 8545

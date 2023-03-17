@@ -90,7 +90,7 @@ export function getRandomStr() {
 }
 
 export function getNewIbcCell() {
-    return `'ibc-ckb-${getRandomStr()}'`;
+    return `ibc-ckb-${getRandomStr()}`;
 }
 export function getRandomNum(minNum, maxNum) {
     switch (arguments.length) {
@@ -211,7 +211,7 @@ export async function pollVerify(randTxHash, count): Promise<boolean> {
             return true;
         } catch (e) {
             console.log(`e:${e}`);//FetchError: request to http://localhost:8555/ failed, reason: connect ECONNREFUSED 127.0.0.1:8555
-            if (!(e.toString().includes("FetchError"))) {
+            if (!(e.toString().includes("FetchError") || e.toString().includes("please wait"))) {
                 console.log("pollVerify succ")
                 return true;
             }
