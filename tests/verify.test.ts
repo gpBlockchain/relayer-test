@@ -233,10 +233,18 @@ describe('Full Process', function () {
                 await step("get hash in range[1]", async () => {
                     hashInRange0 = await getLatestHashByBlockNum(verifyRange[1])
                 })
-                await step("query txHash ", async () => {
-                    const result = await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, hashInRange0)
-                    console.log("result:", result)
-                })
+                try {
+                    await step("query txHash ", async () => {
+                        const result = await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, hashInRange0)
+                        console.log("result:", result)
+                    })
+                }catch (e){
+                    if (e.toString().includes("please wait a while")){
+                        console.log('continue:',e)
+                        continue
+                    }
+                    throw Error(e)
+                }
             }
         })
         it('txhash is range[1] +1', async () => {
