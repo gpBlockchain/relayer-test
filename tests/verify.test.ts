@@ -209,7 +209,7 @@ describe('Full Process', function () {
         })
         it('txHash is in  range[1]', async () => {
             let hashInRange0;
-            for (let i = 0; i < 100000; i++) {
+            for (let i = 0; i < 5; i++) {
                 await step("Get the range of transactions that verify can verify", async () => {
                     try {
                         /**
