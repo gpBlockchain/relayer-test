@@ -15,7 +15,7 @@ export const VERIFIER_CONFIG_PATH = `${CHECKPOINT_UPDATE_PATH}/data/verify/`;
 export const INITIAL_CHECKPOINT = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef";
 export const CHECKPOINT = "0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a";
 export const INIT_CKB_IBC ='ibc-ckb-1';
-export const VERIFIER_CONTAINER_NAME = "checkpointupdate-verify-client";
+export const VERIFIER_CONTAINER_NAME = "verify-client";
 import {RPC} from "@ckb-lumos/rpc";
 
 export const eth_provider = new ethers.JsonRpcProvider(ETH_EXEC_RPC_URL);
