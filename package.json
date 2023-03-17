@@ -40,6 +40,7 @@
     "typescript": "^3.7.3"
   },
   "scripts": {
+    "setUp": "ts-node tests/setup/setUp.ts --myArg prepare",
     "test": "mocha --config tests/runners/mocha/.mocharc.jsonc --color --reporter allure-mocha"
   }
 }
