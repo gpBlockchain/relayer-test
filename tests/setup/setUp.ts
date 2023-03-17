@@ -8,7 +8,7 @@ import {sh} from "../../src/utils/sh";
 import {
     checkLightCellExist,
     getIbcCellRangeByIbcName,
-    getNewIbcCell, switchCase,
+    getNewIbcCell, pollVerify, switchCase,
     waitDockerUp,
 } from "../utils/util";
 import fetch from "node-fetch";
@@ -53,6 +53,9 @@ export async function setUp(): Promise<String>{
         await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose start verify-client  &`);
         await waitDockerUp(VERIFIER_CONTAINER_NAME, 600, 20)
         console.log("succ!! ")
+        if(!(await pollVerify("0xe50c04b937af3b6b8647a2e56a1e928258e5af97afa8a987c97f97e547852131",1000))){
+            return "prepare env fail, please check it!!";
+        }
         return "prepare env succ!!";
     }
     return "prepare env fail, please check it!!";
@@ -60,6 +63,8 @@ export async function setUp(): Promise<String>{
 
 //todo
 export async function tearDown(): Promise<String> {
-    return "";
+    await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose down`)
+    console.log(`pls run :sudo rm -rf ${CHECKPOINT_UPDATE_PATH}`)
+    return ""
 }
 
