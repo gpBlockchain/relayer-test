@@ -9,7 +9,7 @@ const {ScriptValue} = values;
 
 export enum FeeRate {
     SLOW = 508,
-    NORMAL = 10000000,
+    NORMAL = 684793290,
     FAST = 10000000
 }
 
@@ -39,16 +39,24 @@ export async function buildTransactionWithTxType(txSkeleton: TransactionSkeleton
     const defaultIndexer = new Indexer(options.ckbUrl, options.ckbUrl);
     const fromScript = helpers.parseAddress(options.from, {config: CKB_CONFIG});
     let neededCapacity = BI.from(0)
+    const collected: Cell[] = [];
+    let collectedSum = BI.from(0);
 
-
+    // 1. 检查构造这笔交易最少需要多少cell
     for (let i = 0; i < options.outputCells.length; i++) {
         neededCapacity = neededCapacity.add(options.outputCells[i].cellOutput.capacity)
     }
-    txSkeleton = txSkeleton.update("inputs", (inputs) => inputs.push(...options.inputCells));
+    //todo 补充txSkeleton的output
+    for (let i = 0; i < txSkeleton.get("outputs").size; i++) {
+        neededCapacity = neededCapacity.add(txSkeleton.get("outputs").get(i).cellOutput.capacity)
+    }
 
-    //todo change option -> txSkeleton.input
+
+    // 计算减到input的cap后还需要多少cap ， neededCapacity = input.cap -output.cap
+    // todo: 补充txSkeleton之前的input
     if(options.inputCells!= undefined) {
         for (let i = 0; i < options.inputCells.length; i++) {
+            // todo : check live cell capacity
             if (neededCapacity.lte(options.inputCells[i].cellOutput.capacity)) {
                 neededCapacity = BI.from(0)
                 break;
@@ -56,18 +64,31 @@ export async function buildTransactionWithTxType(txSkeleton: TransactionSkeleton
             neededCapacity = neededCapacity.sub(options.inputCells[i].cellOutput.capacity)
         }
     }
-    console.log("need Cap:", neededCapacity.toNumber())
-    let collectedSum = BI.from(0);
-    const collected: Cell[] = [];
-    const collector = defaultIndexer.collector({lock: fromScript, type: "empty"});
+    console.log("this tx need extra capacity:", neededCapacity.toNumber())
 
-    for await (const cell of collector.collect()) {
-        collectedSum = collectedSum.add(cell.cellOutput.capacity);
-        console.log("collectedSum:",collectedSum.toNumber())
-        collected.push(cell);
-        if (collectedSum.gt(neededCapacity)) {
-            console.log("break collect")
-            break;
+    // 将inputcell添加到collected
+    // todo: 补充txSkeleton之前的input
+    if(options.inputCells!= undefined){
+        for (let i = 0; i <options.inputCells.length ; i++) {
+            collected.push(options.inputCells[i])
+            collectedSum = collectedSum.add(options.inputCells[i].cellOutput.capacity)
+            console.log("push cell cap:",options.inputCells[i].cellOutput.capacity)
+            console.log('current collectedSum:',collectedSum.toNumber())
+        }
+    }
+
+    // 如果neededCapacity>0 或者 input 的长度为空
+    // todo: 补充txSkeleton之前的input
+    const collector = defaultIndexer.collector({lock: fromScript, type: "empty"});
+    if(neededCapacity.gt(BI.from(0)) || collected.length == 0) {
+        for await (const cell of collector.collect()) {
+            collectedSum = collectedSum.add(cell.cellOutput.capacity);
+            console.log("collectedSum:", collectedSum.toNumber())
+            collected.push(cell);
+            if (collectedSum.gt(neededCapacity)) {
+                console.log("break collect")
+                break;
+            }
         }
     }
     console.log('total cell balance: ', collectedSum.toString())
@@ -118,7 +139,6 @@ export async function buildTransactionWithTxType(txSkeleton: TransactionSkeleton
                 new ScriptValue(fromScript, {validate: false})
             )
         );
-    console.log("firstIndex:",firstIndex)
     if (firstIndex !== -1) {
         console.log(" txSkeleton.get(\"witnesses\").size:", txSkeleton.get("witnesses").size)
         while (firstIndex >= txSkeleton.get("witnesses").size) {
