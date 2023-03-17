@@ -32,6 +32,7 @@ jobs:
         run: |
           npm i
           cd build/ && sh prepare.sh && cd ../
+          npm run setUp
           npm run test
       - name: Publish e2e test report
         if: success() || failure()
