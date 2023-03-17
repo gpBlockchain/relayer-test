@@ -23,9 +23,9 @@ describe('Full Process', function () {
         //         throw new Error("configUpdate failed")
         //     }
         //     console.log("services start success!!")
-        //     if (!(await pollVerify(randTxHash, 10000))) {
-        //         throw new Error("pollVerify failed")
-        //     }
+            if (!(await pollVerify(randTxHash, 10000))) {
+                throw new Error("pollVerify failed")
+            }
         //     console.log("verifier rpc start success!!")
         // })
         await step("get latest hash", async () => {
