@@ -6,8 +6,8 @@ import { expect } from "chai";
 
 describe('To restart the service and check the block synchronization status', function(){
     this.timeout(1000_000);
-    const srcDataPath = path.join(rootPath, "../build/")
-    const servRestartPath = path.join(rootPath, 'data/servRestart/');
+    const srcDataPath = path.join(rootPath, "/build/")
+    const servRestartPath = path.join(rootPath, 'tests/data/servRestart/');
     beforeEach(async () => {
         await step("env prepare", async() => {
             const status = await sh(`mkdir -p ${servRestartPath} && cp -rf ${srcDataPath} ${servRestartPath}`);

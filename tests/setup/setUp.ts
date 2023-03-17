@@ -1,8 +1,6 @@
 import {
-    CHECKPOINT,
-    CHECKPOINT_BY_SLOT,
     CHECKPOINT_UPDATE_PATH,
-    FINALITY_UPDATE, INIT_CKB_IBC, INITIAL_CHECKPOINT,
+    INIT_CKB_IBC, INITIAL_CHECKPOINT,
     RELAYER_CONFIG_PATH,
     VERIFIER_CONFIG_PATH, VERIFIER_CONTAINER_NAME
 } from "../config/config";
@@ -13,7 +11,7 @@ import {
     getNewIbcCell, switchCase,
     waitDockerUp,
 } from "../utils/util";
-import {getJsonData} from "../../src/utils/util";
+import fetch from "node-fetch";
 
 const myArg  = process.argv[3];
 const fixture =switchCase(myArg, {
@@ -22,24 +20,39 @@ const fixture =switchCase(myArg, {
 });
 console.log(`"exec ${fixture}"`)
 
+
+async function cpDockerBuildFiles(tmpPath:string){
+    await sh('pwd')
+    await sh(`mkdir -p  ${tmpPath} && cp -r build/* ${tmpPath}`)
+}
+
+async function getLatestSlotBlockRootHash(){
+    //todo replace url
+    const response = await fetch('https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60/eth/v1/beacon/light_client/finality_update');
+    const res = await response.json();
+    const response1 = await fetch(`https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60/eth/v1/beacon/headers/${res.data.finalized_header.beacon.slot}`);
+    const res1 = await response1.json();
+    return res1.data.root
+}
+
 export async function setUp(): Promise<String>{
-    const response = await getJsonData(FINALITY_UPDATE);
-    console.log(`GET FINALITY_UPDATE SLOT:${response.data.finalized_header.beacon.slot}`);
-    const response1 = await getJsonData(`${CHECKPOINT_BY_SLOT}${response.data.finalized_header.beacon.slot}`);
-    console.log(`GET BLOCK ROOT HASH:${response1.data.root}`);
-    await sh(`cd ${RELAYER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${response1.data.root}/g config.toml`);
+    await cpDockerBuildFiles(CHECKPOINT_UPDATE_PATH);
+
     const NEW_CKB_IBC = getNewIbcCell();
     console.log(`USE CKB IBC CELL:${NEW_CKB_IBC}`);
     await sh(`cd ${RELAYER_CONFIG_PATH} && sed -ig s/${INIT_CKB_IBC}/${NEW_CKB_IBC}/g config.toml`);
-    await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INIT_CKB_IBC}/${NEW_CKB_IBC}/g helios.toml`);
+    await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INIT_CKB_IBC}/${NEW_CKB_IBC}/g config.toml`);
     await sh(`cd ${RELAYER_CONFIG_PATH} && sed -ig s/${INIT_CKB_IBC}/${NEW_CKB_IBC}/g entrypoint.sh`);
+    const latestSlotHash = await getLatestSlotBlockRootHash()
+    await sh(`cd ${RELAYER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${latestSlotHash}/g config.toml`);
     console.log(`START RELATER SERVICE`);
-    await sh(`cd ${CHECKPOINT_UPDATE_PATH} && nohup bash start.sh relayer-docker-compose.yml > relay.log 2>&1 &`);
+    await sh(`cd ${CHECKPOINT_UPDATE_PATH} && nohup bash start.sh > relay.log 2>&1 &`);
     if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
         const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
-        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${CHECKPOINT}/${hashRanges[0]}/g helios.toml`);
-        await sh(`cd ${CHECKPOINT_UPDATE_PATH} && nohup bash start.sh verifier-docker-compose.yml > verify.log 2>&1 &`);
+        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${hashRanges[0]}/g config.toml`);
+        await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose start verify-client  &`);
         await waitDockerUp(VERIFIER_CONTAINER_NAME, 600, 20)
+        console.log("succ!! ")
         return "prepare env succ!!";
     }
     return "prepare env fail, please check it!!";
@@ -47,6 +60,6 @@ export async function setUp(): Promise<String>{
 
 //todo
 export async function tearDown(): Promise<String> {
-    return null;
+    return "";
 }
 
