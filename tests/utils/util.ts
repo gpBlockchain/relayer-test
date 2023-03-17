@@ -89,6 +89,9 @@ export function getRandomStr() {
     return Math.random().toString(36).slice(-10);
 }
 
+export function getNewIbcCell() {
+    return `'ibc-ckb-${getRandomStr()}'`;
+}
 export function getRandomNum(minNum, maxNum) {
     switch (arguments.length) {
         case 1:
@@ -217,7 +220,7 @@ export async function pollVerify(randTxHash, count): Promise<boolean> {
     return false;
 }
 
-async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
+export async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
     let upStatus = false;
     for (let i = 0; i < waitCount; i++) {
         await Sleep(1000)
@@ -228,6 +231,7 @@ async function waitDockerUp(dockerName: string, waitCount, upTime: number) {
             waitCount++;
             if (upTime < 0) {
                 // 持续启动 upTime 说明启动成功
+                console.log(`'START SERVICE:${dockerName} SUCCESS!!'`)
                 return
             }
             continue;
@@ -269,4 +273,20 @@ export async function checkDockerUp(dockerName: string): Promise<boolean> {
 async function getLogByDockerName(dockerName: string): Promise<string> {
     // @ts-ignore
     return (await sh(`docker logs ${dockerName}`))
+}
+
+export function switchCase<T>(
+    value: T,
+    cases: Record<string | number | symbol, () => any>,
+    defaultCase?: () => any
+): any {
+    //@ts-ignore
+    const caseFn = cases[value];
+    if (caseFn) {
+        return caseFn();
+    }
+    if (defaultCase) {
+        return defaultCase();
+    }
+    throw new Error(`Unhandled Type: ${value}`);
 }

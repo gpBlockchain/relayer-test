@@ -52,3 +52,16 @@ export const request = async (
 export async function Sleep(timeout: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 }
+
+export async function getJsonData(url: string): Promise<any> {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        const jsonData = await response.json();
+        return jsonData;
+    } catch (error) {
+        throw new Error(`Error fetching JSON data: ${error.message}`);
+    }
+}
