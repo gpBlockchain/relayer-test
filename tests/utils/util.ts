@@ -90,7 +90,7 @@ export function getRandomStr() {
 }
 
 export function getNewIbcCell() {
-    return `'ibc-ckb-${getRandomStr()}'`;
+    return `ibc-ckb-${getRandomStr()}`;
 }
 export function getRandomNum(minNum, maxNum) {
     switch (arguments.length) {

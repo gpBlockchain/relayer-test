@@ -16,9 +16,9 @@ import {blockchain} from "@ckb-lumos/base";
 describe('demo', function () {
 
     this.timeout(1000_000)
-    it.skip("dd", async () => {
+    it("dd", async () => {
         const randomId = "7790";
-        const ret = await getIbcCellRangeByIbcName(`ibc-ckb-315600`)
+        const ret = await getIbcCellRangeByIbcName(`ibc-ckb-rtyvu5pnbq`)
         // await checkDockerUp("checkpointupdate_verify")
         const response = await fetch('https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60/eth/v1/beacon/light_client/finality_update');
         const res = await response.json();
