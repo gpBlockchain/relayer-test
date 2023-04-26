@@ -1,2 +1,2 @@
 # relayer-test
-test for relayer
+test for forcerelayer
