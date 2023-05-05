@@ -16,6 +16,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Show username variable
+        run: echo ${{ secrets.DOCKER_USERNAME }}
+        
+      - name: Show password variable
+        run: echo ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Extract metadata (tags, labels) for Docker
         id: meta
