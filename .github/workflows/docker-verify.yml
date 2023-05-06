@@ -30,11 +30,6 @@ jobs:
           profile: minimal
           toolchain: 1.68.0
           
-      # Use cargo to build your Rust project
-      - name: Build Rust project
-        uses: actions-rs/cargo@v1
-        with:
-          command: build --release
           
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
