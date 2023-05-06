@@ -1,6 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Wed Mar 08 16:21:25 GMT 2023","Wed Mar 08 16:21:27 GMT 2023","2521","config chainid is error","","","","","id is not exist on chain, expect Error: forcerelay error: no lightclient cell deployed on ckb",""
-"broken","Wed Mar 08 16:21:27 GMT 2023","Wed Mar 08 16:21:28 GMT 2023","209","Full Process","","","","","services ready",""
-"passed","Wed Mar 08 16:21:27 GMT 2023","Wed Mar 08 16:21:27 GMT 2023","13","demo","","","","","dd",""
-"broken","Wed Mar 08 16:21:28 GMT 2023","Wed Mar 08 16:21:28 GMT 2023","1","Full Process","","","","","""after each"" hook for ""services ready""",""
-"skipped","Wed Mar 08 16:21:27 GMT 2023","Wed Mar 08 16:21:27 GMT 2023","1","To restart the service and check the block synchronization status","","","","","restart relay and verifier service",""
