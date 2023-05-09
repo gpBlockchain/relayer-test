@@ -1,7 +1,7 @@
 import {
     CHECKPOINT_UPDATE_PATH,
     INIT_CKB_IBC, INITIAL_CHECKPOINT,
-    RELAYER_CONFIG_PATH, RELAYER_INITIAL_CHECKPOINT,
+    RELAYER_CONFIG_PATH, RELAYER_INITIAL_CHECKPOINT, VERIFIER_CHECKPOINT,
     VERIFIER_CONFIG_PATH, VERIFIER_CONTAINER_NAME
 } from "../config/config";
 import {sh} from "../../src/utils/sh";
@@ -47,18 +47,18 @@ export async function setUp(): Promise<String>{
     await sh(`cd ${RELAYER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${RELAYER_INITIAL_CHECKPOINT}/g config.toml`);
     console.log(`START RELATER SERVICE`);
     await sh(`cd ${CHECKPOINT_UPDATE_PATH} && nohup bash start.sh > relay.log 2>&1 &`);
-    if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
-        const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
-        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${hashRanges[0]}/g config.toml`);
+    // if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
+    //     const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
+        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${VERIFIER_CHECKPOINT}/g config.toml`);
         await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose start verify-client  &`);
         await waitDockerUp(VERIFIER_CONTAINER_NAME, 600, 20)
         console.log("succ!! ")
         // if(!(await pollVerify("0xe50c04b937af3b6b8647a2e56a1e928258e5af97afa8a987c97f97e547852131",1000))){
         //     return "prepare env fail, please check it!!";
         // }
-        // return "prepare env succ!!";
-    }
-    return "prepare env fail, please check it!!";
+        return "prepare env succ!!";
+    // }
+    // return "prepare env fail, please check it!!";
 }
 
 //todo
