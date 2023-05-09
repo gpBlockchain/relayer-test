@@ -47,7 +47,7 @@ export async function setUp(): Promise<String>{
     await sh(`cd ${RELAYER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${RELAYER_INITIAL_CHECKPOINT}/g config.toml`);
     console.log(`START RELATER SERVICE`);
     await sh(`cd ${CHECKPOINT_UPDATE_PATH} && nohup bash start.sh > relay.log 2>&1 &`);
-    // if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
+    if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
     //     const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
         await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${VERIFIER_CHECKPOINT}/g config.toml`);
         await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose start verify-client  &`);
@@ -57,8 +57,8 @@ export async function setUp(): Promise<String>{
         //     return "prepare env fail, please check it!!";
         // }
         return "prepare env succ!!";
-    // }
-    // return "prepare env fail, please check it!!";
+    }
+    return "prepare env fail, please check it!!";
 }
 
 //todo
