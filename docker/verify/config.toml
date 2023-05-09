@@ -2,7 +2,7 @@
 consensus_rpc = "https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60"
 execution_rpc = "https://ethereum.blockpi.network/v1/rpc/public"
 rpc_port = 8545
-checkpoint = "0x4ba9a39508ab6dc363c87d3726bc063116966ce2f81746ca6647a23cde9fa5a9"
+checkpoint = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef"
 ckb_rpc = "https://testnet.ckbapp.dev"
 lightclient_contract_typeargs = "0xb7fcfa4ad253ddd60481bdd35331a634ff985fdb3b3fab4e1066cf97faf40315"
 lightclient_binary_typeargs = "0xeb871adf5fc97fde4b56ee8b545581147dbb8eb6fdce4fd3d51e8c3618505699"

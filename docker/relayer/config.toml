@@ -64,7 +64,7 @@ address_type = { derivation = 'ethermint', proto_type = { pk_type = '/injective.
 id = 'ibc-eth-1'
 genesis_time = 1606824023
 genesis_root = "0x4b363db94e286120d76eb905340fdd4e54bfe9f06bf33ff6cf5ad27f511bfe95"
-initial_checkpoint = "0xfdb109e56d819c2716a1b5d573f1d81cfc93b499574fab7d61b2318f2a3c229c"
+initial_checkpoint = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef"
 key_name = 'relayer_eth_wallet'
 rpc_addr_pool = [
   "https://beacon-nd-995-871-887.p2pify.com/c9dce41bab3e120f541e4ffb748efa60"
