@@ -48,14 +48,14 @@ export async function setUp(): Promise<String>{
     console.log(`START RELATER SERVICE`);
     await sh(`cd ${CHECKPOINT_UPDATE_PATH} && nohup bash start.sh > relay.log 2>&1 &`);
     if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
-    //     const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
-        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${VERIFIER_CHECKPOINT}/g config.toml`);
+        const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
+        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${hashRanges[0]}/g config.toml`);
         await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose start verify-client  &`);
         await waitDockerUp(VERIFIER_CONTAINER_NAME, 600, 20)
         console.log("succ!! ")
-        // if(!(await pollVerify("0xe50c04b937af3b6b8647a2e56a1e928258e5af97afa8a987c97f97e547852131",1000))){
-        //     return "prepare env fail, please check it!!";
-        // }
+        if(!(await pollVerify("0xe18819094559f683f496eb4623957f8a53c233efd2f83cd84f6f3ac542a260b5",1000))){
+            return "prepare env fail, please check it!!";
+        }
         return "prepare env succ!!";
     }
     return "prepare env fail, please check it!!";
