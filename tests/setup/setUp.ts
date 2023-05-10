@@ -52,7 +52,7 @@ export async function setUp(): Promise<String>{
     await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose up relayer-client  &`);
     if (await checkLightCellExist(NEW_CKB_IBC, 300)) {
         // const hashRanges = await getIbcCellRangeByIbcName(NEW_CKB_IBC)
-        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${VERIFIER_CHECKPOINT}/g config.toml`);
+        await sh(`cd ${VERIFIER_CONFIG_PATH} && sed -ig s/${INITIAL_CHECKPOINT}/${RELATER_CHECKPOINT}/g config.toml`);
         await sh(`cd ${CHECKPOINT_UPDATE_PATH} && docker-compose up verify-client  &`);
         await waitDockerUp(VERIFIER_CONTAINER_NAME, 600, 20)
         console.log("succ!! ")
