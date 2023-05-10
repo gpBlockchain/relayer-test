@@ -13,7 +13,8 @@ export const CHECKPOINT_UPDATE_PATH = path.join(rootPath, '/tmp/checkpointUpdate
 export const RELAYER_CONFIG_PATH = `${CHECKPOINT_UPDATE_PATH}/data/relayer/`;
 export const VERIFIER_CONFIG_PATH = `${CHECKPOINT_UPDATE_PATH}/data/verify/`;
 export const INITIAL_CHECKPOINT = "0xa179cbd497b112acb057039601a75e2daafae994aa5f01d6e1a1d6f85e07a8ef";
-export const CHECKPOINT = "0x21fe8d06dd0ad783a16a09b23aa7d90f65bf77b1bdb1ec4a7091e1867aebcc8a";
+export const VERIFIER_CHECKPOINT = "0x4ba9a39508ab6dc363c87d3726bc063116966ce2f81746ca6647a23cde9fa5a9";
+export const RELATER_CHECKPOINT = "0xfdb109e56d819c2716a1b5d573f1d81cfc93b499574fab7d61b2318f2a3c229c";
 export const INIT_CKB_IBC ='ibc-ckb-1';
 export const VERIFIER_CONTAINER_NAME = "verify-client";
 import {RPC} from "@ckb-lumos/rpc";
