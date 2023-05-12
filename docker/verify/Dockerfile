@@ -1,4 +1,4 @@
-FROM nervos/ckb-docker-builder:bionic-rust-1.67.1 as synapseweb3-forcerelay-verifier-docker-builder
+FROM nervos/ckb-docker-builder:bionic-rust-1.68.1 as synapseweb3-forcerelay-verifier-docker-builder
 
 WORKDIR /
 
