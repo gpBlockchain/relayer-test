@@ -28,5 +28,4 @@ jobs:
         with:
           context: docker/verify
           push: true
-          tags: ${{ steps.meta2.outputs.tags }}
-          labels: ${{ steps.meta2.outputs.labels }}
+          tags: 3156004029/verify:main
