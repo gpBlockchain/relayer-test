@@ -258,7 +258,7 @@ describe('Full Process', function () {
                 })
             }catch (e){
                 console.log(`errMsg:${e.toString()}`)
-                expect(e.toString()).to.be.includes("out of workable range", e.toString())
+                expect(e.toString()).to.include("out of workable range")
                 throw Error(e)
             }
 
