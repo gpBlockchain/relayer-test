@@ -257,12 +257,11 @@ describe('Full Process', function () {
                 try {
                     await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, hashInRange0)
                 }catch (e){
-                    errMsg = e.toString()
+                    if (e.toString().to.be.includes("out of workable range")){
+                        console.log(`${e}`)
+                    }
+                    throw Error(e)
                 }
-            })
-            await step("err msg eq",async ()=>{
-                console.log(`errMsg:${errMsg}`)
-                expect(errMsg).to.be.includes("out of workable range")
             })
         })
         it.skip('query in ibc-cell update', async () => {
