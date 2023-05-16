@@ -257,9 +257,8 @@ describe('Full Process', function () {
                     await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, hashInRange0)
                 })
             }catch (e){
-                console.log(`errMsg assert:${e.toString()}`)
-                if (e.toString().to.be.includes("out of workable range")){
-                }
+                console.log(`errMsg:${e.toString()}`)
+                expect(e.toString()).to.be.includes("out of workable range", e.toString())
                 throw Error(e)
             }
 
