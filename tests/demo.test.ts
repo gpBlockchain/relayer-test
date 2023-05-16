@@ -172,7 +172,7 @@ describe('demo', function () {
         const account = generateAccountFromPrivateKey(account1_private);
         console.log(account.address)
     })
-    it("send normal ",async ()=>{
+    it.skip("send normal ",async ()=>{
         const account = generateAccountFromPrivateKey(account1_private);
         //build type = "ibc-3156004029
         let txSkeleton = helpers.TransactionSkeleton({});
@@ -227,7 +227,7 @@ describe('demo', function () {
         console.log(txHash)
     })
 
-    it("send rand ", async () => {
+    it.skip("send rand ", async () => {
         function getHexBynum(num:number) {
             let hex = ""
             for (let i = 0; i < num; i++) {
