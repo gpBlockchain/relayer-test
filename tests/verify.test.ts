@@ -261,6 +261,7 @@ describe('Full Process', function () {
                 }
             })
             await step("err msg eq",async ()=>{
+                console.log(`errMsg:${errMsg}`)
                 expect(errMsg).to.be.includes("out of workable range")
             })
         })
