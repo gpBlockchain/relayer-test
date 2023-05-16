@@ -252,17 +252,17 @@ describe('Full Process', function () {
             await step("get hash in range[1]+1", async () => {
                 hashInRange0 = await getLatestHashByBlockNum(verifyRange[1] + 1)
             })
-            let errMsg;
-            await step("query txHash ", async () => {
-                try {
+            try {
+                await step("query txHash ", async () => {
                     await forceRelayGetForceRelayCkbTransaction(VERIFIER_RPC_URL, hashInRange0)
-                }catch (e){
-                    if (e.toString().to.be.includes("out of workable range")){
-                        console.log(`${e}`)
-                    }
-                    throw Error(e)
+                })
+            }catch (e){
+                console.log(`errMsg assert:${e.toString()}`)
+                if (e.toString().to.be.includes("out of workable range")){
                 }
-            })
+                throw Error(e)
+            }
+
         })
         it.skip('query in ibc-cell update', async () => {
             // 一直查询知道cell更新，导致报错
