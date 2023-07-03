@@ -349,6 +349,7 @@ describe('demo', function () {
     it.skip("cp data",async ()=>{
 
         await sh("pwd")
+        console.log("debug")
     })
 
     async function cpDockerBuildFiles(tmpPath:string){
