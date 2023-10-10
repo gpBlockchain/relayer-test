@@ -6,6 +6,7 @@ RUN git clone https://github.com/synapseweb3/forcerelay.git
 
 RUN cd forcerelay \
     && git checkout tags/v0.1.2 \
+    && CARGO_INCREMENTAL=0 \
     && cargo build
 
 
