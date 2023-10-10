@@ -4,9 +4,12 @@ WORKDIR /
 
 RUN git clone https://github.com/synapseweb3/forcerelay.git
 
+RUN git clone https://github.com/synapseweb3/forcerelay.git
+
 RUN cd forcerelay \
-    && git checkout main \
+    && git checkout tags/v0.1.2 \
     && cargo build
+
 
 RUN set -eux; \
     apt-get update; \
